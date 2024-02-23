@@ -49,3 +49,14 @@ TODO: pls summarize how to check "Article Management" bahavior
 ### Like Feature
 
 TODO: pls summarize how to check "Like Feature" bahavior
+
+
+
+Install authenticate package:
+composer require "cakephp/authentication:^2.4"
+
+- Features:
+1. User:
+    + List Users: /users
+    + Add User: /users/add
+    + Logout: /users/logout
