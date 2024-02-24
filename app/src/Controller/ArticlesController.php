@@ -121,7 +121,6 @@ class ArticlesController extends AppController
 
         $article = $this->Articles->get($id);
         $result = $this->Articles->delete($article);
-        $result = true;
         if($this->request->isJson() || $this->request->accepts('application/json')) {
             $article = [
                 'id' => $article->id,
