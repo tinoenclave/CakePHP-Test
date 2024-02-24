@@ -2,6 +2,7 @@
 namespace App\Model\Table;
 
 use Cake\ORM\Table;
+use Cake\Validation\Validator;
 
 class ArticlesTable extends Table
 {
@@ -17,9 +18,29 @@ class ArticlesTable extends Table
 
         $this->setTable('articles');
         $this->setPrimaryKey('id');
-        $this->addBehavior('Timestamp');
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
         ]);
+        $this->addBehavior('Timestamp', [
+            'events' => [
+                'Model.beforeSave' => [
+                    'created_at' => 'new',
+                    'updated_at' => 'always',
+                ]
+            ]
+        ]);
+    }
+
+    public function validationDefault(Validator $validator): Validator
+    {
+        $validator
+            ->notEmptyString('title')
+            ->minLength('title', 10)
+            ->maxLength('title', 255)
+
+            ->notEmptyString('body')
+            ->minLength('body', 10);
+
+        return $validator;
     }
 }
