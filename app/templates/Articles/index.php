@@ -1,5 +1,7 @@
 <h1>Articles</h1>
+<?php if($this->request->getAttribute('identity')):?>
 <?= $this->Html->link('Add Article', ['action' => 'add']) ?>
+<?php endif ?>
 <table>
     <tr>
         <th>Title</th>
@@ -19,8 +21,10 @@
         <td><?= h($article->created_at) ?></td>
         <td class="actions">
             <?= $this->Html->link(__('View'), ['action' => 'view', $article->id]) ?>
-            <?= $this->Html->link('Edit', ['action' => 'edit', $article->id]) ?>
-            <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $article->id], ['confirm' => __('Are you sure you want to delete # {0}?', $article->id)]) ?>
+            <?php if($this->request->getAttribute('identity')):?>
+                <?= $this->Html->link('Edit', ['action' => 'edit', $article->id]) ?>
+                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $article->id], ['confirm' => __('Are you sure you want to delete # {0}?', $article->id)]) ?>
+            <?php endif ?>
         </td>
     </tr>
     <?php endforeach; ?>

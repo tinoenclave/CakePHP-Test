@@ -33,9 +33,11 @@ class ArticlesController extends AppController
 
     public function index()
     {
-        $this->loadComponent('Paginator');
-        //$articles = $this->Paginator->paginate($this->Articles->find('all', ['contain' => ['Users']]));
-        $articles = $this->paginate($this->Articles->find('all', ['contain' => ['Users']]));
+        $this->paginate = [
+            'contain' => ['Users'],
+            'limit' => 10
+        ];
+        $articles = $this->paginate($this->Articles);
         $this->set(compact('articles'));
         $this->viewBuilder()->setOption('serialize', 'articles');
     }
