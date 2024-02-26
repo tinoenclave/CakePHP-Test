@@ -1,9 +1,3 @@
-<?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\User $user
- */
-?>
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
@@ -53,8 +47,7 @@
                                 <label for="password">Password <span class="text-danger">(*)</span></label>
                                 <input type="password" required=true name="password" class="form-control" id="password"
                                     placeholder="Password">
-                                <p class="text-muted">Note: (Password cannot be empty; the minimum length is 5
-                                    characters)</p>
+                                <p class="text-muted">Note: (Password cannot be empty, the minimum length is 5, and the maximum is 255 characters)</p>
                             </div>
                         </div>
                         <!-- /.card-body -->

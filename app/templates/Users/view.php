@@ -1,73 +1,60 @@
-<?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\User $user
- */
-?>
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit User'), ['action' => 'edit', $user->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete User'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Users'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New User'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column-responsive column-80">
-        <div class="users view content">
-            <h3><?= h($user->email) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Email') ?></th>
-                    <td><?= h($user->email) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($user->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created At') ?></th>
-                    <td><?= h($user->created_at) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Updated At') ?></th>
-                    <td><?= h($user->updated_at) ?></td>
-                </tr>
-            </table>
-            <div class="related">
-                <h4><?= __('Related Articles') ?></h4>
-                <?php if (!empty($user->articles)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <th><?= __('User Id') ?></th>
-                            <th><?= __('Title') ?></th>
-                            <th><?= __('Body') ?></th>
-                            <th><?= __('Created At') ?></th>
-                            <th><?= __('Updated At') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($user->articles as $articles) : ?>
-                        <tr>
-                            <td><?= h($articles->id) ?></td>
-                            <td><?= h($articles->user_id) ?></td>
-                            <td><?= h($articles->title) ?></td>
-                            <td><?= h($articles->body) ?></td>
-                            <td><?= h($articles->created_at) ?></td>
-                            <td><?= h($articles->updated_at) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Articles', 'action' => 'view', $articles->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Articles', 'action' => 'edit', $articles->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Articles', 'action' => 'delete', $articles->id], ['confirm' => __('Are you sure you want to delete # {0}?', $articles->id)]) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>&nbsp</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active">User Detail</li>
+                </ol>
             </div>
         </div>
-    </div>
-</div>
+    </div><!-- /.container-fluid -->
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">User Detail</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <div class="card-body">
+                        <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+                            <div class="text-muted">
+                                <p class="text-sm"><?= __('Id') ?>
+                                    <b class="d-block"><?= h($user->id) ?></b>
+                                </p>
+                                <p class="text-sm"><?= __('Email') ?>
+                                    <b class="d-block"><?= h($user->email) ?></b>
+                                </p>
+                                <p class="text-sm"><?= __('Created At') ?>
+                                    <b class="d-block"><?= h($user->created_at) ?></b>
+                                </p>
+                                <p class="text-sm"><?= __('Updated At') ?>
+                                    <b class="d-block"><?= h($user->updated_at) ?></b>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <?= $this->Html->link(__('Close'), ['action' => 'index'], ['class' => 'btn btn-block btn-success btn float-right', 'style' => 'width: 200px']) ?>
+                    </div>
+                </div>
+                <!-- /.card -->
+
+            </div>
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
