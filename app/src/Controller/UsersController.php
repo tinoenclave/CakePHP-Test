@@ -47,7 +47,7 @@ class UsersController extends AppController
     {
         $user = $this->Authentication->getIdentity();
 
-        if($user) {
+        if ($user) {
             $users = $this->paginate($this->Users);
             $this->set(compact('users'));
         } else {
