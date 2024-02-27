@@ -70,6 +70,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         }
 
         // Load more plugins here
+        $this->addPlugin('ApiTokenAuthenticator');
     }
 
     /**
