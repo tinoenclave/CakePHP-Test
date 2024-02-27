@@ -9,21 +9,19 @@ use Cake\ORM\Entity;
  * User Entity
  *
  * @property int $id
- * @property int $user_id
- * @property string $title
- * @property string $body
+ * @property string $user_id
+ * @property string $article_id
  * @property \Cake\I18n\FrozenTime $created_at
  * @property \Cake\I18n\FrozenTime $updated_at
  *
- * @property \App\Model\Entity\Article[] $articles
+ * @property \App\Model\Entity\Like[] $likes
  */
 
-class Article extends Entity
+class Like extends Entity
 {
     protected $_accessible = [
         'user_id' => true,
-        'title' => true,
-        'body' => true,
+        'article_id' => true,
         'created_at' => true,
         'updated_at' => true,
     ];

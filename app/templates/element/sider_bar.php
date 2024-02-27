@@ -7,11 +7,24 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            <div class="info">
-                <a href="#" class="d-block">User Login</a>
+        <?php $user = $this->request->getAttribute('identity') ?>
+        <?php if ($user): ?>
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="info">
+                    <a href="javascript:;" class="d-block">
+                        <?= $user->email ?>
+                    </a>
+                    <?= $this->Html->link('Logout', ['controller' => 'Users', 'action' => 'logout'], ['class' => "d-block"]); ?>
+                </div>
             </div>
-        </div>
+        <?php else: ?>
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="info">
+                    <?= $this->Html->link('Login', ['controller' => 'Users', 'action' => 'login'], ['class' => "d-block"]); ?>
+                    <?= $this->Html->link('Register', ['controller' => 'Users', 'action' => 'add'], ['class' => "d-block"]); ?>
+                </div>
+            </div>
+        <?php endif ?>
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">

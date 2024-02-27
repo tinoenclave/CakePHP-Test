@@ -33,8 +33,9 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->css([
         'plugins/fontawesome-free/css/all.min',
         'plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min',
-        'adminlte.min'
-        ]) ?>
+        'adminlte.min',
+        'common',
+    ]) ?>
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <?= $this->fetch('meta') ?>
@@ -53,13 +54,13 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
                     <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="index3.html" class="nav-link">Home</a>
+                    <a href="/" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Users</a>
+                    <?= $this->Html->link('Users', ['controller' => 'Users', 'action' => 'index'], ['class' => "nav-link"]); ?>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Articles</a>
+                    <?= $this->Html->link('Articles', ['controller' => 'Articles', 'action' => 'index'], ['class' => "nav-link"]); ?>
                 </li>
             </ul>
         </nav>
@@ -70,7 +71,6 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-            <?= $this->Flash->render() ?>
             <?= $this->fetch('content') ?>
         </div>
         <!-- /.content-wrapper -->
@@ -97,7 +97,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         'plugins/bootstrap/js/bootstrap.bundle.min',
         'plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min',
         'adminlte.min'
-        ]) ?>
+    ]) ?>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 </body>
 

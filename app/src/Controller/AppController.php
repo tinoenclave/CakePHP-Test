@@ -28,6 +28,7 @@ use Cake\Controller\Controller;
  */
 class AppController extends Controller
 {
+    public $page = 10;
     public function beforeFilter(\Cake\Event\EventInterface $event)
     {
         parent::beforeFilter($event);
