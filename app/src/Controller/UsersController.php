@@ -93,7 +93,7 @@ class UsersController extends AppController
             }
         } else {
             $this->paginate = [
-                'limit' => 10
+                'limit' => $this->page
             ];
     
             $users = $this->paginate($this->Users);

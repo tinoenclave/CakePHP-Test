@@ -49,7 +49,7 @@ class ArticlesController extends AppController
                         ->group(['Likes.article_id']);
                     }
                 ],
-                'limit' => 10
+                'limit' => $this->page
             ];
 
             $articles = $this->paginate($this->Articles);
@@ -75,7 +75,15 @@ class ArticlesController extends AppController
             $isRequestJson = $this->request->isJson() || $this->request->accepts('application/json') ? true : false;
 
             $article = $this->Articles->get($id, [
-                'contain' => ['Users'],
+                'contain' => [
+                    'Users' => [
+                        'fields' => ['email']
+                    ],
+                    'Likes' => function($query){
+                        return $query->select(['Likes.article_id', 'like_count' => $query->func()->count('Likes.article_id')])
+                        ->group(['Likes.article_id']);
+                    }
+                ],
             ]);
 
             if ($isRequestJson) {
