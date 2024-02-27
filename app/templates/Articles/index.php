@@ -71,7 +71,7 @@
                                             </td>
                                             <td class="actions">
                                                 <?= $this->Html->link(__('View'), ['action' => 'view', $article->id]) ?>
-                                                <?php if($this->request->getAttribute('identity')):?>
+                                                <?php if($currentUser && $currentUser->id === $article->user_id):?>
                                                     <?= $this->Html->link('Edit', ['action' => 'edit', $article->id]) ?>
                                                     <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $article->id], ['confirm' => __('Are you sure you want to delete # {0}?', $article->id)]) ?>
                                                 <?php endif ?>

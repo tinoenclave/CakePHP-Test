@@ -48,6 +48,9 @@ class UsersController extends AppController
         $user = $this->Authentication->getIdentity();
 
         if ($user) {
+            $this->paginate = [
+                'limit' => 10
+            ];
             $users = $this->paginate($this->Users);
             $this->set(compact('users'));
         } else {
