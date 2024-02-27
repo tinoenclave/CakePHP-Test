@@ -45,6 +45,9 @@ class UsersTable extends Table
         $this->hasMany('Articles', [
             'foreignKey' => 'user_id',
         ]);
+        $this->hasMany('Like', [
+            'foreignKey' => 'user_id',
+        ]);
         $this->addBehavior('Timestamp', [
             'events' => [
                 'Model.beforeSave' => [

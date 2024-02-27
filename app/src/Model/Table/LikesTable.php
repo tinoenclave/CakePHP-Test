@@ -6,7 +6,7 @@ namespace App\Model\Table;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
-class ArticlesTable extends Table
+class LikesTable extends Table
 {
     /**
      * Initialize method
@@ -18,12 +18,12 @@ class ArticlesTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('articles');
+        $this->setTable('likes');
         $this->setPrimaryKey('id');
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
         ]);
-        $this->hasMany('Likes', [
+        $this->belongsTo('Articles', [
             'foreignKey' => 'article_id',
         ]);
         $this->addBehavior('Timestamp', [
@@ -39,12 +39,8 @@ class ArticlesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->notEmptyString('title')
-            ->minLength('title', 10)
-            ->maxLength('title', 255)
-
-            ->notEmptyString('body')
-            ->minLength('body', 10);
+            ->notEmptyString('user_id')
+            ->notEmptyString('article_id');
 
         return $validator;
     }

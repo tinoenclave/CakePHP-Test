@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use Cake\View\JsonView;
@@ -9,6 +11,7 @@ use Cake\Http\Exception\NotFoundException;
  * Articles Controller
  *
  * @property \App\Model\Table\ArticlesTable $Articles
+ * @property \App\Model\Table\LikesTable $Likes
  */
 class ArticlesController extends AppController
 {
@@ -37,7 +40,15 @@ class ArticlesController extends AppController
     {
         if ($this->request->is('get')) {
             $this->paginate = [
-                'contain' => ['Users'],
+                'contain' => [
+                    'Users' => [
+                        'fields' => ['email']
+                    ],
+                    'Likes' => function($query){
+                        return $query->select(['Likes.article_id', 'like_count' => $query->func()->count('Likes.article_id')])
+                        ->group(['Likes.article_id']);
+                    }
+                ],
                 'limit' => 10
             ];
 
@@ -270,6 +281,53 @@ class ArticlesController extends AppController
             $this->set('article', $article);
         } catch (Exception $e) {
             throw new NotFoundException(__('Unable to delete your article.'));
+        }
+    }
+
+    public function like($articleId = null) {
+        try {
+            $this->request->allowMethod(['post', 'get']);
+            $user = $this->Authentication->getIdentity();
+
+            $queryLike = $this->Articles->Likes->find('all')->where([
+                'user_id' => $user->id,
+                'article_id' => $articleId
+            ])->first();
+
+            if($queryLike) {
+                $result = [
+                    "status" => "error",
+                    "data" => [
+                        'user_id' => $user->id,
+                        'article_id' => $articleId
+                    ],
+                    "message" => "You liked the article."
+                ];
+            } else {
+                $likeArticle = $this->Articles->Likes->newEmptyEntity();
+                $likeArticle->user_id = $user->id;
+                $likeArticle->article_id = $articleId;
+                $likeResult = $this->Articles->Likes->save($likeArticle);
+
+                if($likeResult) {
+                    $result = [
+                        "status" => "success",
+                        "data" => $likeArticle,
+                        "message" => "You liked article #{$articleId}."
+                    ];
+                } else {
+                    $result = [
+                        "status" => "error",
+                        "data" => $likeArticle,
+                        "message" => "Unable to like article #{$articleId}."
+                    ];
+                }
+            }
+            
+            $this->viewBuilder()->setOption('serialize', 'result');
+            $this->set('result', $result);
+        } catch (Exception $e) {
+            throw new NotFoundException(__('Unable to like your article.'));
         }
     }
 }
