@@ -86,30 +86,49 @@ class ArticlesController extends AppController
     public function add()
     {
         $user = $this->Authentication->getIdentity();
+        $isRequestJson = $this->request->isJson() || $this->request->accepts('application/json') ? true : false;
 
         if (!$user) {
-            return $this->redirect('/articles');
-        }
+            if(!$isRequestJson) {
+                return $this->redirect('/articles');
+            }
+        } else {
+            $article = $this->Articles->newEmptyEntity();
 
-        $article = $this->Articles->newEmptyEntity();
+            if ($this->request->is('post')) {
+                $article = $this->Articles->patchEntity($article, $this->request->getData());
+                $article->user_id = $user->id;
+                $saveArticleResult = $this->Articles->save($article);
 
-        if ($this->request->is('post')) {
-            $article = $this->Articles->patchEntity($article, $this->request->getData());
-            $article->user_id = $user->id;
-            $result = $this->Articles->save($article);
-            if ($this->request->isJson() || $this->request->accepts('application/json')) {
-                $this->viewBuilder()->setOption('serialize', 'article');
-            } else {
-                if ($result) {
-                    $this->Flash->success(__('Your article has been saved.'));
-                    return $this->redirect(['action' => 'index']);
+                if ($isRequestJson) {
+                    if($saveArticleResult) {
+                        $result = [
+                            "status" => "success",
+                            "data" => $article,
+                            "message" => "Your article has been saved."
+                        ];
+                    } else {
+                        $result = [
+                            "status" => "error",
+                            "data" => $article,
+                            "message" => "Unable to add your article."
+                        ];
+                    }
+
+                    $article = $result;
+                    $this->viewBuilder()->setOption('serialize', 'article');
                 } else {
-                    $this->Flash->error(__('Unable to add your article.'));
+                    if ($saveArticleResult) {
+                        $this->Flash->success(__('Your article has been saved.'));
+                        return $this->redirect(['action' => 'index']);
+                    } else {
+                        $this->Flash->error(__('Unable to add your article.'));
+                    }
                 }
             }
-        }
 
-        $this->set('article', $article);
+            $this->set('article', $article);
+        }
     }
 
     public function edit($id)
@@ -120,8 +139,10 @@ class ArticlesController extends AppController
             $user = $this->Authentication->getIdentity();
 
             if (!$user) {
-                return $this->redirect('/articles');
-            }
+                if(!$isRequestJson) {
+                    return $this->redirect('/articles');
+                }
+            } 
 
             $article = $this->Articles->get($id);
 
@@ -133,22 +154,41 @@ class ArticlesController extends AppController
 
             if ($this->request->is(['post', 'put'])) {
                 $this->Articles->patchEntity($article, $this->request->getData());
-                $result = $this->Articles->save($article);
-                
+
                 if ($isRequestJson) {
                     if ($user->id !== $article->user_id) {
                         $result = [
                             "status" => "error",
                             "data" => null,
-                            "message" => "You cannot edit this article."
+                            "message" => "Unable to update your article."
                         ];
+
+                        $article = $result;
+                    } else{
+                        $saveArticleResult = $this->Articles->save($article);
+
+                        if($saveArticleResult) {
+                            $result = [
+                                "status" => "success",
+                                "data" => $article,
+                                "message" => "Your article has been updated."
+                            ];
+                        } else {
+                            $result = [
+                                "status" => "error",
+                                "data" => $this->request->getData(),
+                                "message" => "Unable to update your article."
+                            ];
+                        }
 
                         $article = $result;
                     }
 
                     $this->viewBuilder()->setOption('serialize', 'article');
                 } else {
-                    if ($result) {
+                    $saveArticleResult = $this->Articles->save($article);
+
+                    if ($saveArticleResult) {
                         $this->Flash->success(__('Your article has been updated.'));
                         return $this->redirect(['action' => 'index']);
                     } else {
@@ -159,41 +199,67 @@ class ArticlesController extends AppController
 
             $this->set('article', $article);
         } catch (Exception $e) {
-            if (!$isRequestJson) {
-                throw new NotFoundException(__('Article not found'));
-            }
+            throw new NotFoundException(__('Unable to update your article.'));
         }
     }
 
     public function delete($id)
     {
         $isRequestJson = $this->request->isJson() || $this->request->accepts('application/json') ? true : false;
-
+        
         try {
             $user = $this->Authentication->getIdentity();
 
             if (!$user) {
-                return $this->redirect('/articles');
+                if(!$isRequestJson) {
+                    return $this->redirect('/articles');
+                }
             }
 
             $article = $this->Articles->get($id);
 
             if ($user->id !== $article->user_id) {
-                return $this->redirect(['action' => 'index']);
+                if(!$isRequestJson) {
+                    return $this->redirect('/articles');    
+                }
             }
 
             $this->request->allowMethod(['post', 'delete']);
 
-            $result = $this->Articles->delete($article);
+            if ($isRequestJson) {
+                if ($user->id !== $article->user_id) {
+                    $result = [
+                        "status" => "error",
+                        "data" => null,
+                        "message" => "Unable to delete your article."
+                    ];
 
-            if ($this->request->isJson() || $this->request->accepts('application/json')) {
-                $article = [
-                    'id' => $article->id,
-                    'message' => __('The {0} article has been deleted.', $article->title),
-                ];
+                    $article = $result;      
+                } else {
+                    $deleteArticleResult = $this->Articles->delete($article);
+
+                    if($deleteArticleResult) {
+                        $result = [
+                            "status" => "success",
+                            "data" => $article,
+                            "message" => __('The {0} article has been deleted.', $article->title)
+                        ];
+                    } else {
+                        $result = [
+                            "status" => "error",
+                            "data" => null,
+                            "message" => __('Unable to delete your article.')
+                        ];
+                    }
+
+                    $article = $result;
+                }
+
                 $this->viewBuilder()->setOption('serialize', 'article');
             } else {
-                if ($result) {
+                $deleteArticleResult = $this->Articles->delete($article);
+
+                if ($deleteArticleResult) {
                     $this->Flash->success(__('The {0} article has been deleted.', $article->title));
                     return $this->redirect(['action' => 'index']);
                 } else {
@@ -203,9 +269,7 @@ class ArticlesController extends AppController
 
             $this->set('article', $article);
         } catch (Exception $e) {
-            if (!$isRequestJson) {
-                throw new NotFoundException(__('Unable to delete your article.'));
-            }
+            throw new NotFoundException(__('Unable to delete your article.'));
         }
     }
 }
