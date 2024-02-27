@@ -35,22 +35,52 @@ class ArticlesController extends AppController
 
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Users'],
-            'limit' => 10
-        ];
-        $articles = $this->paginate($this->Articles);
-        $this->set(compact('articles'));
-        $this->viewBuilder()->setOption('serialize', 'articles');
+        if ($this->request->is('get')) {
+            $this->paginate = [
+                'contain' => ['Users'],
+                'limit' => 10
+            ];
+
+            $articles = $this->paginate($this->Articles);
+            $isRequestJson = $this->request->isJson() || $this->request->accepts('application/json') ? true : false;
+
+            if ($isRequestJson) {
+                $result = [
+                    "status" => "success",
+                    "data" => $articles,
+                    "message" => "List of articles"
+                ];
+                $articles = $result;
+                $this->viewBuilder()->setOption('serialize', 'articles');
+            }
+
+            $this->set(compact('articles'));
+        }
     }
 
     public function view($id = null)
     {
-        $article = $this->Articles->get($id, [
-            'contain' => ['Users'],
-        ]);
-        $this->set(compact('article'));
-        $this->viewBuilder()->setOption('serialize', 'article');
+        if ($this->request->is('get')) {
+            $isRequestJson = $this->request->isJson() || $this->request->accepts('application/json') ? true : false;
+
+            $article = $this->Articles->get($id, [
+                'contain' => ['Users'],
+            ]);
+
+            if ($isRequestJson) {
+                $result = [
+                    "status" => "success",
+                    "data" => $article,
+                    "message" => "Article detail #{$id}"
+                ];
+
+                $article = $result;
+
+                $this->viewBuilder()->setOption('serialize', 'article');
+            }
+
+            $this->set(compact('article'));
+        }
     }
 
     public function add()
@@ -96,14 +126,26 @@ class ArticlesController extends AppController
             $article = $this->Articles->get($id);
 
             if ($user->id !== $article->user_id) {
-                return $this->redirect(['action' => 'index']);
+                if (!$isRequestJson) {
+                    return $this->redirect(['action' => 'index']);
+                }
             }
 
             if ($this->request->is(['post', 'put'])) {
                 $this->Articles->patchEntity($article, $this->request->getData());
                 $result = $this->Articles->save($article);
-
+                
                 if ($isRequestJson) {
+                    if ($user->id !== $article->user_id) {
+                        $result = [
+                            "status" => "error",
+                            "data" => null,
+                            "message" => "You cannot edit this article."
+                        ];
+
+                        $article = $result;
+                    }
+
                     $this->viewBuilder()->setOption('serialize', 'article');
                 } else {
                     if ($result) {
@@ -125,7 +167,6 @@ class ArticlesController extends AppController
 
     public function delete($id)
     {
-        $id = 58;
         $isRequestJson = $this->request->isJson() || $this->request->accepts('application/json') ? true : false;
 
         try {
@@ -142,7 +183,7 @@ class ArticlesController extends AppController
             }
 
             $this->request->allowMethod(['post', 'delete']);
-            
+
             $result = $this->Articles->delete($article);
 
             if ($this->request->isJson() || $this->request->accepts('application/json')) {
