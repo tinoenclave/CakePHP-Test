@@ -1,9 +1,3 @@
-<?php
-/**
- * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\User> $users
- */
-?>
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
