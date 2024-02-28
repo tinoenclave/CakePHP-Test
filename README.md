@@ -28,8 +28,14 @@ composer install
 
 Set up the database:
 
+Step 1:
 ```
 bin/cake migrations migrate
+```
+
+Step 2:
+```
+bin/cake migrations seed
 ```
 
 ### Accessing the Application
