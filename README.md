@@ -58,19 +58,7 @@ You can log in/log out/create/edit/update/view/delete users through the API or b
 **To use the API, please ensure that you set the header with ```Accept: application/json``` for each endpoint requested**
 
 + Here is the list of supported API/endpoints for the users module.
- 1.  Create Users: /users/add
- ```
- POST /users/add HTTP/1.1
- Host: localhost:8765
- Accept: application/json
- Content-Type: application/json
- Content-Length: 67
- {
-     "email": "tino15@enclave.vn",
-     "password": "12345678"
- }
-```
- 2.  Login: /users/login
+ 1.  Login: /users/login
  ```
  POST /users/login HTTP/1.1
  Host: localhost:8765
@@ -82,13 +70,13 @@ You can log in/log out/create/edit/update/view/delete users through the API or b
      "password": "123456"
  }
 ```
- 3.  User View: /users/view/{user_id}
+ 2.  User View: /users/view/{user_id}
  ```
  GET /users/view/1 HTTP/1.1
  Host: localhost:8765
  Accept: application/json
  ```
- 4.  Edit User: /users/edit/{user_id}
+ 3.  Edit User: /users/edit/{user_id}
  ```
  PUT /users/edit/1 HTTP/1.1
  Host: localhost:8765
@@ -100,6 +88,18 @@ You can log in/log out/create/edit/update/view/delete users through the API or b
      "password": "123456"
  }
  ```
+  4.  Create Users: /users/add
+ ```
+ POST /users/add HTTP/1.1
+ Host: localhost:8765
+ Accept: application/json
+ Content-Type: application/json
+ Content-Length: 67
+ {
+     "email": "tino15@enclave.vn",
+     "password": "12345678"
+ }
+```
  5.  Logout: /users/logout
  ```
  GET /users/logout HTTP/1.1
