@@ -51,7 +51,7 @@ class UsersController extends AppController
                 $result = [
                     "status" => "error",
                     "data" => null,
-                    "message" => "User not found."
+                    "message" => "User not authenticated."
                 ];
 
                 $user = $result;
