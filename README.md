@@ -60,7 +60,7 @@ You can log in/log out/create/edit/update/view/delete users through the API or b
  Content-Type: application/json
  Content-Length: 67
  {
-     "email": "tino15@enclave.vn",
+     "email": "tino1@enclave.vn",
      "password": "12345678"
  }
 ```
@@ -72,25 +72,25 @@ You can log in/log out/create/edit/update/view/delete users through the API or b
  Content-Type: application/json
  Content-Length: 65
  {
-     "email": "tino15@enclave.vn",
+     "email": "tino1@enclave.vn",
      "password": "123456"
  }
 ```
  3.  User View: /users/view/{user_id}
  ```
- GET /users/view/15 HTTP/1.1
+ GET /users/view/1 HTTP/1.1
  Host: localhost:8765
  Accept: application/json
  ```
  4.  Edit User: /users/edit/{user_id}
  ```
- PUT /users/edit/16 HTTP/1.1
+ PUT /users/edit/1 HTTP/1.1
  Host: localhost:8765
  Accept: application/json
  Content-Type: application/json
  Content-Length: 65
  {
-     "email": "tino15@enclave.vn",
+     "email": "tino1@enclave.vn",
      "password": "123456"
  }
  ```
@@ -102,13 +102,13 @@ You can log in/log out/create/edit/update/view/delete users through the API or b
  Content-Type: application/json
  Content-Length: 65
  {
-     "email": "tino15@enclave.vn",
+     "email": "tino1@enclave.vn",
      "password": "123456"
  }
  ```
 6. Delete User: /users/delete/{user_id}
 ```
-POST /users/delete/14 HTTP/1.1
+POST /users/delete/1 HTTP/1.1
 Host: localhost:8765
 Accept: application/json
 ```
@@ -125,8 +125,8 @@ You can manage the articles through the API or by accessing the URL
  Content-Type: application/json
  Content-Length: 86
  {
-     "title": "Article 0000000000000008",
-     "body": "Article 0000000000000008"
+     "title": "Article 00000000000000010",
+     "body": "Article 00000000000000010"
  }
  ```
  2.  Retrieve All Articles: /articles.json (GET)
@@ -134,20 +134,15 @@ You can manage the articles through the API or by accessing the URL
  GET /articles.json HTTP/1.1
  Host: localhost:8765
  Content-Type: application/json
- Content-Length: 54
- {
-     "title": "Test Data",
-     "body": "Content"
- }
  ```
  3.  Retrieve a Single Article: /articles/{article_id}.json (GET)
  ```
- GET /articles/64.json HTTP/1.1
+ GET /articles/1.json HTTP/1.1
  Host: localhost:8765
  ```
  4.  Update an Article: /articles/{article_id}.json
  ```
- PUT /articles/64.json HTTP/1.1
+ PUT /articles/1.json HTTP/1.1
  Host: localhost:8765
  Content-Type: application/json
  Content-Length: 
@@ -158,14 +153,9 @@ You can manage the articles through the API or by accessing the URL
  ```
  5.  Delete an Article: /articles/{article_id}.json
  ```
- DELETE /articles/65.json HTTP/1.1
+ DELETE /articles/1.json HTTP/1.1
  Host: localhost:8765
  Content-Type: application/json
- Content-Length: 54
- {
-     "title": "Test Data",
-     "body": "Content"
- }
  ```
 
 ### Like Feature
@@ -175,7 +165,7 @@ I have created a migration to support the 'likes' feature, so please run the ```
 + Here is the list of supported API/endpoints for the article module.
 1. Likes: /articles/like/{article_id}.json
 ```
-POST /articles/like/68.json HTTP/1.1
+POST /articles/like/1.json HTTP/1.1
 Host: localhost:8765
 Content-Type: application/json
 Content-Length: 86
@@ -184,3 +174,5 @@ Content-Length: 86
     "body": "Article 0000000000000008"
 }
 ```
+
+bin/cake migrations seed
