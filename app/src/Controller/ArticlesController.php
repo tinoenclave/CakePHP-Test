@@ -312,6 +312,7 @@ class ArticlesController extends AppController
                     "message" => "You liked the article."
                 ];
             } else {
+                $this->Articles->get($articleId);
                 $likeArticle = $this->Articles->Likes->newEmptyEntity();
                 $likeArticle->user_id = $user->id;
                 $likeArticle->article_id = $articleId;

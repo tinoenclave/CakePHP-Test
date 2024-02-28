@@ -97,7 +97,7 @@ You can log in/log out/create/edit/update/view/delete users through the API or b
  Content-Length: 67
  {
      "email": "tino15@enclave.vn",
-     "password": "12345678"
+     "password": "123456"
  }
 ```
  5.  Logout: /users/logout
