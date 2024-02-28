@@ -60,7 +60,7 @@ You can log in/log out/create/edit/update/view/delete users through the API or b
  Content-Type: application/json
  Content-Length: 67
  {
-     "email": "tino1@enclave.vn",
+     "email": "tino15@enclave.vn",
      "password": "12345678"
  }
 ```
