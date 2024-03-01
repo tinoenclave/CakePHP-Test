@@ -180,5 +180,3 @@ Content-Length: 86
     "body": "Article 0000000000000008"
 }
 ```
-
-bin/cake migrations seed
